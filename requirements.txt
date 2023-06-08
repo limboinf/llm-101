@@ -14,3 +14,4 @@ libmagic
 tiktoken
 python-dotenv==1.0.0
 tabulate
+chromadb
