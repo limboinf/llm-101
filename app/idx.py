@@ -3,8 +3,10 @@ import os
 import pickle
 
 from langchain.vectorstores import Chroma
-from utils import get_project_root
+from app.utils import get_project_root
 from pathlib import Path
+from typing import List
+from langchain.docstore.document import Document
 
 
 class AbstractIndexStorage(ABC):
@@ -25,16 +27,12 @@ class ChromaIndexStorage(AbstractIndexStorage):
     def __init__(self, save_folder: str):
         super().__init__(save_folder)
 
-    def save(self, db: Chroma):
+    def save(self, docs: List[Document], embeddings):
         if not os.path.exists(self._save_folder):
             os.makedirs(self._save_folder)
 
-        if db is None:
-            return
 
-        db.__setattr__('_persist_directory', self._save_folder)
-        db.persist()
-        return db
+        return Chroma.from_documents(docs, embeddings, persist_directory=self._save_folder)
 
     def load(self, embedding):
         if not os.path.exists(self._save_folder):

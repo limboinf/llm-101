@@ -11,6 +11,7 @@ def _load_openai():
         "https": "http://127.0.0.1:7890"
     }
     openai.api_key = os.getenv("OPENAI_API_KEY")
+    print('Init OpenAI env')
     return openai
 
 
@@ -21,6 +22,7 @@ def _load_aiproxy():
     }
     openai.api_key = os.getenv("AIPROXY_API_KEY")
     openai.api_base = "https://api.aiproxy.io/v1"
+    print('Init AIPROXY env')
     return openai
 
 

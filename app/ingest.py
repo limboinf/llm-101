@@ -1,5 +1,4 @@
 import sys
-import pickle
 from langchain.document_loaders import (
     TextLoader,
     UnstructuredWordDocumentLoader,
@@ -15,14 +14,12 @@ from langchain.vectorstores.chroma import Chroma
 from langchain.document_loaders.directory import FILE_LOADER_TYPE
 from langchain.docstore.document import Document
 from langchain.vectorstores import VectorStore
-from pathlib import Path
 
 from typing import Any, List, Optional, Type, Union
 from dotenv import load_dotenv
 
-from idx import ChromaIndexStorage
-from consts import FileSuffix
-from utils import get_project_root
+from app.idx import ChromaIndexStorage
+from app.consts import FileSuffix
 
 load_dotenv()
 
@@ -53,11 +50,11 @@ class Ingest(object):
         embeddings = OpenAIEmbeddings()
 
         # vector_store = FAISS.from_documents(docs, embeddings)
-        vector_store = Chroma.from_documents(docs, embeddings)
-        return ChromaIndexStorage(self.db_path).save(vector_store)
+        return ChromaIndexStorage(self.db_path).save(docs, embeddings)
 
-    def load(self, embddings) -> VectorStore:
-        return ChromaIndexStorage(self.db_path).load(embddings)
+    @staticmethod
+    def load(db_path, embddings) -> VectorStore:
+        return ChromaIndexStorage(db_path).load(embddings)
 
 
 def _get_loader_cls(file_type: FileSuffix) -> FILE_LOADER_TYPE:
