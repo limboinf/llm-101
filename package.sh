@@ -21,4 +21,6 @@ $ENV_PATH/bin/pip --default-timeout=1000 --retries=5 install --trusted-host=pypi
 
 export PYTHONPATH="${PYTHONPATH}:$APP_HOME"
 
+echo $PYTHONPATH
+
 echo "------------ LLM-101 Init OK ------------"
