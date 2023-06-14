@@ -46,6 +46,12 @@ print(f"2:with template --> {resp}")
 
 
 # 直接构建
+# https://python.langchain.com/en/latest/modules/prompts/getting_started.html#prompttemplates
+# PromptTemplate the low-level interface.
+# from_template() 构造
+# to_string() 可以给LLM(which expects raw text)
+# to_message() 可以给ChatModel(which expects a list of messages)
+
 prompt = PromptTemplate(
     template="You are a helpful assistant that translates {input_language} to {output_language}. the text is : {text}",
     input_variables=["input_language", "output_language", "text"],
