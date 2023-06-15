@@ -15,7 +15,7 @@ python example/fn_call.py 我和马云谁最帅 0
 refs:
 - https://platform.openai.com/docs/guides/gpt/function-calling
 - https://gist.github.com/xtekky/28e1320d593e04e586ba2da807778176
-
+- https://twitter.com/ProgramerJohann/status/1668812508608724994?s=20 提供了流程图挺好的
 
 '''
 import random
