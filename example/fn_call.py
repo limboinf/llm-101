@@ -35,7 +35,7 @@ def to_json(func) -> str:
     '''
     Function to convert a Python function to JSON representation
     Pass to the Chat API model 'gpt-3.5-turbo-0613' or 'gpt-4-0613' as a function
-    
+
     eg:
     {
         'name': 'get_current_weather',
@@ -68,7 +68,8 @@ def to_json(func) -> str:
         param_info = {}
 
         # Parameter description from the default value
-        param_info['description'] = inspect.signature(func).parameters[name].default
+        param_info['description'] = inspect.signature(
+            func).parameters[name].default
 
         param_annotation = func_type_hints.get(name)
 
@@ -92,7 +93,7 @@ def to_json(func) -> str:
 def format_call(function_call: dict) -> str:
     '''
     将函数调用格式化为字符串的函数
-    
+
     eg:
     {
         "id": "chatcmpl-xxx",
@@ -119,7 +120,7 @@ def format_call(function_call: dict) -> str:
             "total_tokens": 122
         }
     }
-    
+
     转换为 get_current_weather()
     '''
     json_data: dict = json.loads(function_call.__str__())
@@ -134,11 +135,12 @@ def format_call(function_call: dict) -> str:
 
 def get_current_weather(location: str = 'CityName, CountryCode'):
     """获取城市天气情况
-    
+
     location: 格式 CityName, CountryCode, 如 Beijing, China
     """
 
-    weather_data = requests.get(f'https://openweathermap.org/data/2.5/weather?q={location}&appid=439d4b804bc8187953eb36d2a8c26a02').json()
+    weather_data = requests.get(
+        f'https://openweathermap.org/data/2.5/weather?q={location}&appid=439d4b804bc8187953eb36d2a8c26a02').json()
 
     print(f'\nAPI Request: {location} ...\n')
 
@@ -148,8 +150,8 @@ def get_current_weather(location: str = 'CityName, CountryCode'):
             'description': weather_data['weather'][0]['description'],
             'temperature': weather_data['main']['temp'],
             'humidity': weather_data['main']['humidity']
-            }
-        )
+        }
+    )
 
 
 def get_your_money(account: str = ''):
@@ -221,14 +223,15 @@ def ask_weather(question: str, debug: bool = False):
             messages=prompt,
             functions=[weather_function_json]
         )
-        
+
         if debug:
             print(f'03 ----------\n {completion} \n----------')
 
         # Print the generated response
         print(completion.choices[0].message.content)
     else:
-        print(f'没有找到functin_call, 直接回答 ===> \n{completion.choices[0].message.content}')
+        print(
+            f'没有找到functin_call, 直接回答 ===> \n{completion.choices[0].message.content}')
 
 
 # ----------------------------------------------------------------
@@ -240,7 +243,7 @@ def ask_your_money(question: str, debug: bool = False):
         'role': 'assistant',
         'content': '你是借贷平台，当涉及到有金钱时，回答我金额'
     }
-    
+
     # 相关的问题, response里会有 function_call
     # 不相关的问题, response里不会有 function_call
     user_prompt = {'role': 'user', 'content': question}
@@ -256,7 +259,8 @@ def ask_your_money(question: str, debug: bool = False):
         print(f'01 ----------\n {completion} \n----------')
 
     if 'function_call' in completion.choices[0].message:
-        print(f'Response 存在 function_call: {completion.choices[0].message.function_call.name}')
+        print(
+            f'Response 存在 function_call: {completion.choices[0].message.function_call.name}')
         prompt.append(
             {
                 'role': 'function',         # function role
@@ -274,20 +278,21 @@ def ask_your_money(question: str, debug: bool = False):
             messages=prompt,
             functions=[weather_function_json, money_function_json]
         )
-        
+
         if debug:
             print(f'03 ----------\n {completion} \n----------')
 
         # Print the generated response
         print(completion.choices[0].message.content)
     else:
-        print(f'没有找到functin_call, 直接回答 ===> \n{completion.choices[0].message.content}')
+        print(
+            f'没有找到functin_call, 直接回答 ===> \n{completion.choices[0].message.content}')
 
 
 if __name__ == '__main__':
     q = sys.argv[1]
     debug = sys.argv[2]
-    debug = True if debug.lower() in ['true', '1'] else False 
-    
+    debug = True if debug.lower() in ['true', '1'] else False
+
     # ask_your_money(q, debug=debug)
     ask_weather(q, debug=debug)
