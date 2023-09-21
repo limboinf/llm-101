@@ -18,3 +18,7 @@ chromadb
 redis
 edge-tts
 gptcache
+notebook
+jupyter_ai
+jupyter_ai_magics
+theme-darcula

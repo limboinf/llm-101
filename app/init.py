@@ -26,7 +26,5 @@ def _load_aiproxy():
     return openai
 
 
-def init_llm(t: int = 0):
-    if t == 0:
-        return _load_openai()
-    return _load_aiproxy()
+def init_llm(is_open_ai: bool = True):
+    return _load_openai() if is_open_ai else _load_aiproxy()
